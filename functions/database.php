@@ -171,6 +171,7 @@ function SelectFromTableOnPreparedQuery($query)
                 {
                         $selected_manage_data=mysqli_fetch_all($do_my_county_select,MYSQLI_ASSOC);
                         
+                        //echo json_encode($selected_manage_data);
                         $Connection->close();
                         mysqli_free_result($do_my_county_select);
                         return $selected_manage_data;
@@ -190,7 +191,7 @@ function UpdateTableOneCondition($TableName,$set_column,$set_column_value,$check
 
        
         $update_ward_table_query="UPDATE `$TableName` SET 
-                                   `$set_column`='$set_column_value'
+                                   `$set_column`='". mysqli_real_escape_string($Connection,$set_column_value)."'
                                    WHERE `$check_column`='$check_column_value' ";
                 $do_my_ward_update=mysqli_query($Connection,$update_ward_table_query);
                 if($do_my_ward_update)
@@ -234,5 +235,38 @@ function UpdateAdminsTableOneCondition($TableName,$email_address,$telephone_numb
                        return false;
                     
                 }
+
+}
+
+
+function InsertIntoOrganizationInfoTable($TableName,$organization_name,$organization_type,$description,$limited_number,$kra_pin,$county_id,$phone_number,$email_address,$time_stamp)
+{
+    
+        //connecting to database
+        $Connection=ConnetToDatabaseFuntion();
+        
+        
+        $insert_into_table ="INSERT INTO `$TableName`(`organization_name`,
+                                                        `organization_type`,
+                                                        `description`,
+                                                        `limited_number`,
+                                                        `kra_pin`,
+                                                        `county_id`,
+                                                        `phone_number`,
+                                                        `email_address`,
+                                                        `time_stamp`) 
+                                          VALUES ('". mysqli_real_escape_string($Connection,$organization_name)."','$organization_type','". mysqli_real_escape_string($Connection,$description)."','$limited_number','$kra_pin','$county_id','$phone_number','$email_address','$time_stamp')";
+
+                                if($insert_into_table_query=mysqli_query($Connection,$insert_into_table))
+                                {
+                                        mysqli_free_result($insert_into_table_query);
+                                        $Connection->close();
+                                        return true;
+                                }
+                                else 
+                                {
+                                    die("could not insert into organization table");
+                                }
+
 
 }
