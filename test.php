@@ -1,4 +1,5 @@
 <?php
+require './functions/session.php';
 require './functions/constants.php';
 require './functions/database.php';
 require './functions/functions.php';
