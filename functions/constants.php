@@ -38,5 +38,14 @@ define("sp_mpesa_info_table_name","sp_mpesa_info");
 define("treatment_info_table_name","treatment_info");
 
 //email
-define("email_address","no-reply@ciby.co.ke");
-define("email_password","B%V;cY-5J,EH");
+
+define("mail_host","mail.ciby.co.ke");
+define("mail_port",25);
+define("mail_user_name","no-reply@ciby.co.ke");
+define("mail_password",'baK]TV$A)mPN');
+define("mail_sender","Ciby platform");
+
+define("default_password_size",8);
+
+define("admin_login_url","http://ciby.co.ke/");
+define("admin_recover_password","http://ciby.co.ke/");

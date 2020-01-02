@@ -270,3 +270,58 @@ function InsertIntoOrganizationInfoTable($TableName,$organization_name,$organiza
 
 
 }
+
+
+function InsertIntoAdminInfoTable($TableName,$organization_id,$email_address,$name,$telephone_number,$password,$time_stamp)
+{
+    
+        //connecting to database
+        $Connection=ConnetToDatabaseFuntion();
+        
+        
+        $insert_into_table ="INSERT INTO `$TableName`(`organization_id`,
+                                                        `email_address`,
+                                                        `name`,
+                                                        `telephone_number`,
+                                                        `password`,
+                                                        `time_stamp`) 
+                                          VALUES ('$organization_id','$email_address','". mysqli_real_escape_string($Connection,$name)."','$telephone_number','$password','$time_stamp')";
+
+                                if($insert_into_table_query=mysqli_query($Connection,$insert_into_table))
+                                {
+                                        mysqli_free_result($insert_into_table_query);
+                                        $Connection->close();
+                                        return true;
+                                }
+                                else 
+                                {
+                                    die("could not insert into admin table");
+                                }
+
+
+}
+
+function DeleteSpecificRowONTwoConditions($TableName,$Column1,$Column2,$ColumnValue1,$ColumnValue2)
+{
+        
+        //connecting to database
+        $Connection=ConnetToDatabaseFuntion();
+
+        $delete_query="DELETE FROM `$TableName` WHERE `$Column1` = '$ColumnValue1' AND `$Column2` = '$ColumnValue2'";
+
+        $do_delete_query=mysqli_query($Connection,$delete_query);
+
+        if($do_delete_query)
+        {
+                mysqli_free_result($do_delete_query);
+                $Connection->close();
+                return true;
+        }
+        else 
+        {
+                mysqli_free_result($do_delete_query);
+                $Connection->close();
+                return false;
+        }
+
+}

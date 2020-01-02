@@ -25,6 +25,13 @@ function make_a_session_key($email_address)
     
 }
 
+function make_a_reset_key($email_address)
+{
+    
+    return rand(100000, 999999);
+    
+}
+
 function generateStrongPassword($length , $add_dashes , $available_sets)
 {
 	$sets = array();
@@ -201,4 +208,110 @@ $local_datetime = $utc_datetime;
 
 $local_datetime->setTimeZone(new DateTimeZone($tz));
 return $local_datetime->format($ToDateFormat);
+}
+
+
+function mail_sender_function($address,$name,$body,$alt_body,$subject,$attachment_1,$attachment_2)
+{
+        $mail             = new PHPMailer();
+
+   
+        $mail->IsSMTP(); 
+        $mail->Host       = mail_host; 
+        $mail->SMTPDebug  = 0;                  
+        $mail->SMTPAuth   = true;                  
+        $mail->Host       = mail_host;
+        $mail->Port       = mail_port;                    
+        $mail->Username   = mail_user_name; 
+        $mail->Password   = mail_password;        
+
+        $mail->SetFrom(mail_user_name, mail_sender);
+
+        $mail->AddReplyTo(mail_user_name,mail_sender);
+
+        $mail->Subject    = $subject;
+        $mail->AltBody    = $alt_body; 
+
+        $mail->MsgHTML($body);
+
+        
+        $mail->AddAddress($address, $name);
+
+        $mail->AddAttachment($attachment_1);
+        $mail->AddAttachment($attachment_2);
+
+        if(!$mail->Send()) {
+         // echo "Mailer Error: " . $mail->ErrorInfo;
+            return false;
+        } else {
+         // echo "Message sent!";
+            return true;
+        }
+}
+
+
+function make_user_created_invitational_email_html($name,$user_name,$password,$login_url)
+{
+    return '<html>'
+    . '<body>'
+            . '<div style="background-color:#396270 !important;color:#FFFFFF">'
+            . '<h4>Hello <b>'.strtoupper($name).'</b> welcome to the ciby platform.</h4>'
+            . '<p>To login into the platform please use the following credentials.</p>'
+            . '<table style="color:#FFFFFF">'
+                . '<tr>'
+                    . '<td><b>Username/Email:</b></td>'. '<td>'.$user_name.'</td>'
+                . '</tr>'
+                . '<tr>'
+                    . '<td><b>Password:</b></td>'. '<td>'.$password.'</td>'
+                . '</tr>'
+                . '<tr>'
+                    . '<td><b>Website link:</b></td>'. '<td><a href="'.$login_url.'">Login</a></td>'
+                . '</tr>'
+            . '</table>'
+            . '</div>'
+            . '</br>'
+            . '<div style="background-color:#eaeaea !important" class="logo-img"><a href="http://ciby.co.ke/ class="custom-logo-link" rel="home" itemprop="url"><img width="225" height="106" src="http://ciby.co.ke/logo.png" class="custom-logo" alt="ciby Limited." itemprop="logo"></a></div>'
+           
+    . '</body>'
+    . '</html>';
+}
+
+
+
+function make_user_get_password_reset_url_email_html($name,$url)
+{
+    return '<html>'
+    . '<body>'
+            . '<div style="background-color:#396270 !important;color:#FFFFFF">'
+            . '<h4>Hello <b>'.strtoupper($name).'</b> below is your password rest website link.</h4>'
+            . '<p>To reset your password click on the link below.</p>'
+            . '<table style="color:#FFFFFF">'
+                . '<tr>'
+                    . '<td><b>Reset website link:</b></td>'. '<td>'.$url.'</td>'
+                . '</tr>'
+                . '<tr>'
+                    . '<td><b>Or click here:</b></td>'. '<td><a href="'.$url.'">Here</a></td>'
+                . '</tr>'
+            . '</table>'
+            . '</div>'
+            . '</br>'
+            . '<div style="background-color:#eaeaea !important" class="logo-img"><a href="http://ciby.co.ke/ class="custom-logo-link" rel="home" itemprop="url"><img width="225" height="106" src="http://ciby.co.ke/logo.png" class="custom-logo" alt="ciby Limited." itemprop="logo"></a></div>'
+           
+    . '</body>'
+    . '</html>';
+}
+
+function make_user_get_password_recover_url_email_html($name)
+{
+    return '<html>'
+    . '<body>'
+            . '<div style="background-color:#396270 !important;color:#FFFFFF">'
+            . '<h4>Hello <b>'.strtoupper($name).'</b>.</h4>'
+            . '<p>Your password has been reset, if you did not perform this action please contact your admin.</p>'
+            . '</div>'
+            . '</br>'
+            . '<div style="background-color:#eaeaea !important" class="logo-img"><a href="http://ciby.co.ke/ class="custom-logo-link" rel="home" itemprop="url"><img width="225" height="106" src="http://ciby.co.ke/logo.png" class="custom-logo" alt="ciby Limited." itemprop="logo"></a></div>'
+           
+    . '</body>'
+    . '</html>';
 }
